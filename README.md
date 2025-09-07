@@ -4,14 +4,14 @@ Find out who **doesn’t follow you back**, who your **fans** are (follow you, y
 
 ---
 
-## TL;DR
+
 
 ```bash
 python3 foll.py -i following.html -e followers.html --print all --sort
 What this does
 Parses your Following and Followers export files (HTML or JSON).
 
-Computes:
+# Computes:
 
 Unfollowers — you follow them, they don’t follow you
 
@@ -23,7 +23,7 @@ Prints a summary and (optionally) writes CSV/JSON results.
 
 It does not log in, call private APIs, or automate Instagram. It only reads the files you downloaded from Instagram.
 
-Get your Instagram files
+# Get your Instagram files
 On the Instagram website (desktop is easiest):
 
 Profile menu → More → Your activity → Download your information
@@ -45,14 +45,14 @@ followers.html (people who follow you)
 
 JSON is also supported—use following.json / followers.json if that’s what you receive.
 
-Requirements
+# Requirements:
 Python 3.9+ (works on macOS, Linux, Windows with WSL/PowerShell)
 
 No external dependencies required
 
 Optional: if you have bs4 (BeautifulSoup) installed, HTML parsing gets even more robust
 
-Usage
+# Usage
 css
 Copy code
 python3 foll.py -i following.html -e followers.html \
@@ -76,7 +76,7 @@ Flags
 
 --ignore — newline-delimited file of usernames to exclude (brands/celebs, etc.)
 
-Examples
+# Examples: 
 bash
 Copy code
 # Basic summary
@@ -123,7 +123,8 @@ Fans — they follow you, you don't follow back (15):
 Mutuals — you follow each other (95):
   https://instagram.com/bob
   ...
-Troubleshooting
+
+# Troubleshooting:
 “Extracted 0 usernames”:
 Make sure you’re pointing to the correct files (followers.html and following.html) from the official export. If you received JSON, pass the JSON files instead. Still stuck? Share a tiny (redacted) snippet and we can adjust the parser.
 
