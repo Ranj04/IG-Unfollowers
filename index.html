@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Unfollowers Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #e1306c;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .privacy-note {
+            background: #e8f5e8;
+            color: #2d5a2d;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .upload-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input:hover {
+            border-color: #e1306c;
+            background: #fff5f8;
+        }
+
+        .file-input:focus {
+            outline: none;
+            border-color: #e1306c;
+            box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.1);
+        }
+
+        .demo-section {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #e1306c;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background: #c13584;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card h3 {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #e1306c;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: #e1306c;
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #e1306c;
+            box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.1);
+        }
+
+        .username-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .username-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+
+        .username-item:hover {
+            background: #f8f9fa;
+        }
+
+        .username-item:last-child {
+            border-bottom: none;
+        }
+
+        .username-link {
+            color: #e1306c;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .username-link:hover {
+            text-decoration: underline;
+        }
+
+        .export-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #666;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .footer a {
+            color: #e1306c;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                border-bottom: 1px solid #ddd;
+            }
+
+            .tab:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #1a1a1a;
+                color: #e0e0e0;
+            }
+
+            .card, .upload-section, .export-section, .footer, header {
+                background: #2d2d2d;
+                color: #e0e0e0;
+            }
+
+            .file-input {
+                background: #3d3d3d;
+                border-color: #555;
+                color: #e0e0e0;
+            }
+
+            .search-box {
+                background: #3d3d3d;
+                border-color: #555;
+                color: #e0e0e0;
+            }
+
+            .username-item {
+                border-color: #444;
+            }
+
+            .username-item:hover {
+                background: #3d3d3d;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Instagram Unfollowers Analyzer</h1>
+            <p class="subtitle">Analyze your Instagram following relationships</p>
+            <div class="privacy-note">🔒 Runs completely in your browser — no uploads, no data leaves your device</div>
+        </header>
+
+        <div class="upload-section">
+            <h2>Upload Your Instagram Export Files</h2>
+            <p>Upload your Instagram following and followers export files. You can upload individual files or a ZIP containing both.</p>
+            
+            <div class="file-input-wrapper">
+                <input type="file" id="fileInput" class="file-input" multiple accept=".html,.htm,.json,.zip" aria-label="Select Instagram export files">
+            </div>
+
+            <div class="demo-section">
+                <button class="btn btn-secondary" onclick="loadDemoData()">Demo Mode</button>
+                <small>Try the demo to see how it works without uploading files</small>
+            </div>
+
+            <div id="status" class="status hidden" role="alert" aria-live="polite"></div>
+        </div>
+
+        <div id="results" class="hidden">
+            <div class="summary-cards">
+                <div class="card">
+                    <h3>Following</h3>
+                    <div class="number" id="followingCount">0</div>
+                </div>
+                <div class="card">
+                    <h3>Followers</h3>
+                    <div class="number" id="followersCount">0</div>
+                </div>
+                <div class="card">
+                    <h3>Mutuals</h3>
+                    <div class="number" id="mutualsCount">0</div>
+                </div>
+                <div class="card">
+                    <h3>Unfollowers</h3>
+                    <div class="number" id="unfollowersCount">0</div>
+                </div>
+                <div class="card">
+                    <h3>Fans</h3>
+                    <div class="number" id="fansCount">0</div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('unfollowers')">Unfollowers</button>
+                <button class="tab" onclick="showTab('fans')">Fans</button>
+                <button class="tab" onclick="showTab('mutuals')">Mutuals</button>
+            </div>
+
+            <div id="unfollowers-tab" class="tab-content active">
+                <h3>Unfollowers — you follow them, they don't follow back</h3>
+                <input type="text" class="search-box" placeholder="Search unfollowers..." onkeyup="filterList('unfollowers', this.value)">
+                <div class="username-list" id="unfollowersList"></div>
+            </div>
+
+            <div id="fans-tab" class="tab-content">
+                <h3>Fans — they follow you, you don't follow back</h3>
+                <input type="text" class="search-box" placeholder="Search fans..." onkeyup="filterList('fans', this.value)">
+                <div class="username-list" id="fansList"></div>
+            </div>
+
+            <div id="mutuals-tab" class="tab-content">
+                <h3>Mutuals — you follow each other</h3>
+                <input type="text" class="search-box" placeholder="Search mutuals..." onkeyup="filterList('mutuals', this.value)">
+                <div class="username-list" id="mutualsList"></div>
+            </div>
+
+            <div class="export-section">
+                <h3>Export Results</h3>
+                <button class="btn" onclick="downloadCsv()">Download CSV</button>
+                <button class="btn" onclick="downloadJson()">Download JSON</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>How to Get Your Instagram Data</h3>
+            <p>1. Go to Instagram.com → Settings → Privacy and Security → Data Download</p>
+            <p>2. Request your data (it may take up to 30 days)</p>
+            <p>3. Download the ZIP file and extract it</p>
+            <p>4. Look for files named "following.html" and "followers.html"</p>
+            <br>
+            <p><strong>Privacy:</strong> This tool runs entirely in your browser. No data is sent to any server.</p>
+            <p><strong>Disclaimer:</strong> This tool is not affiliated with Instagram or Meta.</p>
+            <br>
+            <p><a href="https://github.com/[username]/[repo]" target="_blank">View on GitHub</a></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" 
+            integrity="sha384-3y9vQ0kQ6i7P6oY7g7e8aN2z7NeJ8c/7GkR5q3o7dJX8Bq8E7o1u+Zq5l2W7l6vj" 
+            crossorigin="anonymous"></script>
+
+    <script>
+        // Reserved segments that are not usernames
+        const RESERVED_SEGMENTS = new Set([
+            'p', 'reel', 'reels', 'stories', 'explore', 'accounts', 'directory',
+            'about', 'privacy', 'terms', 'api', 'graphql', 'web', 'emails',
+            'oauth', 'sessions', 'challenge', 'tv'
+        ]);
+
+        // Global state
+        let analysisResults = null;
+        let currentTab = 'unfollowers';
+
+        // Username validation regex
+        const USERNAME_REGEX = /^[a-zA-Z0-9._]{1,30}$/;
+
+        function cleanUsername(str) {
+            if (!str) return '';
+            
+            str = str.trim().toLowerCase();
+            
+            // Remove leading @
+            if (str.startsWith('@')) {
+                str = str.substring(1);
+            }
+            
+            // If it's an Instagram URL, extract username
+            const urlMatch = str.match(/https?:\/\/(?:www\.)?instagram\.com\/([^\/?#]+)/);
+            if (urlMatch) {
+                str = urlMatch[1].replace(/\/$/, '').toLowerCase();
+            }
+            
+            // Remove trailing slash
+            str = str.replace(/\/$/, '');
+            
+            // Validate username format
+            if (!USERNAME_REGEX.test(str)) {
+                return '';
+            }
+            
+            // Exclude reserved segments
+            if (RESERVED_SEGMENTS.has(str)) {
+                return '';
+            }
+            
+            return str;
+        }
+
+        function extractFromHtml(html) {
+            const usernames = new Set();
+            
+            try {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Extract from href attributes
+                const links = doc.querySelectorAll('a[href]');
+                links.forEach(link => {
+                    const username = cleanUsername(link.href);
+                    if (username) {
+                        usernames.add(username);
+                    }
+                    
+                    // Also check link text
+                    const textUsername = cleanUsername(link.textContent);
+                    if (textUsername) {
+                        usernames.add(textUsername);
+                    }
+                });
+                
+                // Fallback: scan all text for Instagram URLs and @mentions
+                const textContent = doc.body.textContent;
+                const urlMatches = textContent.match(/https?:\/\/(?:www\.)?instagram\.com\/[^\s"']+/g) || [];
+                urlMatches.forEach(url => {
+                    const username = cleanUsername(url);
+                    if (username) {
+                        usernames.add(username);
+                    }
+                });
+                
+                const mentionMatches = textContent.match(/@[a-zA-Z0-9._]{1,30}/g) || [];
+                mentionMatches.forEach(mention => {
+                    const username = cleanUsername(mention);
+                    if (username) {
+                        usernames.add(username);
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error parsing HTML:', error);
+            }
+            
+            return Array.from(usernames);
+        }
+
+        function extractFromJson(jsonText) {
+            const usernames = new Set();
+            
+            try {
+                const data = JSON.parse(jsonText);
+                const candidates = [];
+                
+                // Walk JSON recursively to collect all strings
+                function walkJson(obj) {
+                    if (obj === null || obj === undefined) return;
+                    
+                    if (typeof obj === 'object') {
+                        if (Array.isArray(obj)) {
+                            obj.forEach(item => walkJson(item));
+                        } else {
+                            Object.values(obj).forEach(value => walkJson(value));
+                        }
+                    } else if (typeof obj === 'string') {
+                        candidates.push(obj);
+                    }
+                }
+                
+                walkJson(data);
+                
+                // Process all string candidates
+                candidates.forEach(candidate => {
+                    const username = cleanUsername(candidate);
+                    if (username) {
+                        usernames.add(username);
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+            
+            return Array.from(usernames);
+        }
+
+        function extractFromZip(zipData) {
+            return new Promise((resolve, reject) => {
+                JSZip.loadAsync(zipData).then(zip => {
+                    const files = {};
+                    
+                    // Find following and followers files
+                    Object.keys(zip.files).forEach(filename => {
+                        const lowerName = filename.toLowerCase();
+                        if (lowerName.includes('following') && (lowerName.endsWith('.html') || lowerName.endsWith('.htm') || lowerName.endsWith('.json'))) {
+                            files.following = filename;
+                        } else if (lowerName.includes('followers') && (lowerName.endsWith('.html') || lowerName.endsWith('.htm') || lowerName.endsWith('.json'))) {
+                            files.followers = filename;
+                        }
+                    });
+                    
+                    if (!files.following || !files.followers) {
+                        reject(new Error('Could not find both following and followers files in ZIP'));
+                        return;
+                    }
+                    
+                    // Extract and parse files
+                    Promise.all([
+                        zip.files[files.following].async('text'),
+                        zip.files[files.followers].async('text')
+                    ]).then(([followingContent, followersContent]) => {
+                        const followingUsernames = files.following.endsWith('.json') 
+                            ? extractFromJson(followingContent)
+                            : extractFromHtml(followingContent);
+                        const followersUsernames = files.followers.endsWith('.json')
+                            ? extractFromJson(followersContent)
+                            : extractFromHtml(followersContent);
+                        
+                        resolve({
+                            following: followingUsernames,
+                            followers: followersUsernames
+                        });
+                    }).catch(reject);
+                }).catch(reject);
+            });
+        }
+
+        function analyzeData(followingUsernames, followersUsernames) {
+            const following = new Set(followingUsernames);
+            const followers = new Set(followersUsernames);
+            
+            const unfollowers = [...following].filter(user => !followers.has(user));
+            const fans = [...followers].filter(user => !following.has(user));
+            const mutuals = [...followers].filter(user => following.has(user));
+            
+            return {
+                unfollowers: unfollowers.sort(),
+                fans: fans.sort(),
+                mutuals: mutuals.sort(),
+                counts: {
+                    following: following.size,
+                    followers: followers.size,
+                    unfollowers: unfollowers.length,
+                    fans: fans.length,
+                    mutuals: mutuals.length
+                }
+            };
+        }
+
+        function showStatus(message, type = 'info') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.classList.remove('hidden');
+        }
+
+        function hideStatus() {
+            document.getElementById('status').classList.add('hidden');
+        }
+
+        function showResults(results) {
+            analysisResults = results;
+            
+            // Update counts
+            document.getElementById('followingCount').textContent = results.counts.following;
+            document.getElementById('followersCount').textContent = results.counts.followers;
+            document.getElementById('mutualsCount').textContent = results.counts.mutuals;
+            document.getElementById('unfollowersCount').textContent = results.counts.unfollowers;
+            document.getElementById('fansCount').textContent = results.counts.fans;
+            
+            // Show results section
+            document.getElementById('results').classList.remove('hidden');
+            
+            // Update lists
+            updateList('unfollowers', results.unfollowers);
+            updateList('fans', results.fans);
+            updateList('mutuals', results.mutuals);
+            
+            showStatus('Analysis complete!', 'success');
+        }
+
+        function updateList(type, usernames) {
+            const listElement = document.getElementById(`${type}List`);
+            listElement.innerHTML = '';
+            
+            usernames.forEach(username => {
+                const item = document.createElement('div');
+                item.className = 'username-item';
+                item.innerHTML = `<a href="https://instagram.com/${username}" target="_blank" class="username-link">@${username}</a>`;
+                listElement.appendChild(item);
+            });
+        }
+
+        function filterList(type, searchTerm) {
+            if (!analysisResults) return;
+            
+            const usernames = analysisResults[type];
+            const filtered = usernames.filter(username => 
+                username.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            updateList(type, filtered);
+        }
+
+        function showTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            currentTab = tabName;
+        }
+
+        function downloadCsv() {
+            if (!analysisResults) return;
+            
+            let csv = 'category,username\n';
+            analysisResults.unfollowers.forEach(username => {
+                csv += `unfollowers,${username}\n`;
+            });
+            analysisResults.fans.forEach(username => {
+                csv += `fans,${username}\n`;
+            });
+            analysisResults.mutuals.forEach(username => {
+                csv += `mutuals,${username}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'instagram_analysis.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadJson() {
+            if (!analysisResults) return;
+            
+            const json = JSON.stringify(analysisResults, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'instagram_analysis.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function loadDemoData() {
+            showStatus('Loading demo data...', 'info');
+            
+            // Demo HTML data
+            const followingHtml = `
+                <!DOCTYPE html>
+                <html>
+                <body>
+                    <a href="https://www.instagram.com/alice/">Alice</a>
+                    <a href="https://www.instagram.com/bob">Bob</a>
+                    <a href="https://www.instagram.com/p/XYZ/">Post</a>
+                </body>
+                </html>
+            `;
+            
+            const followersHtml = `
+                <!DOCTYPE html>
+                <html>
+                <body>
+                    <a href="https://www.instagram.com/bob/">Bob</a>
+                    <a href="https://www.instagram.com/cara">Cara</a>
+                </body>
+                </html>
+            `;
+            
+            // Demo JSON data
+            const followingJson = `[
+                {"string_list_data":[{"value":"alice","href":"https://www.instagram.com/alice/"}]},
+                {"title":"bob"},
+                {"href":"https://www.instagram.com/p/XYZ/"}
+            ]`;
+            
+            const followersJson = `[
+                {"string_list_data":[{"value":"bob","href":"https://www.instagram.com/bob/"}]},
+                {"title":"cara"},
+                {"href":"https://www.instagram.com/reel/ABC/"}
+            ]`;
+            
+            // Extract usernames
+            const followingUsernames = extractFromHtml(followingHtml);
+            const followersUsernames = extractFromHtml(followersHtml);
+            
+            // Analyze
+            const results = analyzeData(followingUsernames, followersUsernames);
+            showResults(results);
+        }
+
+        // File input handler
+        document.getElementById('fileInput').addEventListener('change', async function(event) {
+            const files = Array.from(event.target.files);
+            
+            if (files.length === 0) return;
+            
+            showStatus('Processing files...', 'info');
+            
+            try {
+                let followingUsernames = [];
+                let followersUsernames = [];
+                
+                // Check if we have a ZIP file
+                const zipFile = files.find(file => file.name.toLowerCase().endsWith('.zip'));
+                
+                if (zipFile) {
+                    if (files.length > 1) {
+                        showStatus('Please upload only one ZIP file or individual files, not both.', 'error');
+                        return;
+                    }
+                    
+                    const zipData = await zipFile.arrayBuffer();
+                    const result = await extractFromZip(zipData);
+                    followingUsernames = result.following;
+                    followersUsernames = result.followers;
+                } else {
+                    // Process individual files
+                    const followingFile = files.find(file => 
+                        file.name.toLowerCase().includes('following') && 
+                        (file.name.toLowerCase().endsWith('.html') || file.name.toLowerCase().endsWith('.htm') || file.name.toLowerCase().endsWith('.json'))
+                    );
+                    
+                    const followersFile = files.find(file => 
+                        file.name.toLowerCase().includes('followers') && 
+                        (file.name.toLowerCase().endsWith('.html') || file.name.toLowerCase().endsWith('.htm') || file.name.toLowerCase().endsWith('.json'))
+                    );
+                    
+                    if (!followingFile || !followersFile) {
+                        showStatus('Please upload both following and followers files (HTML or JSON).', 'error');
+                        return;
+                    }
+                    
+                    // Read and parse files
+                    const followingContent = await followingFile.text();
+                    const followersContent = await followersFile.text();
+                    
+                    followingUsernames = followingFile.name.endsWith('.json') 
+                        ? extractFromJson(followingContent)
+                        : extractFromHtml(followingContent);
+                    
+                    followersUsernames = followersFile.name.endsWith('.json')
+                        ? extractFromJson(followersContent)
+                        : extractFromHtml(followersContent);
+                }
+                
+                if (followingUsernames.length === 0 || followersUsernames.length === 0) {
+                    showStatus('Could not extract usernames from files. Please check that they are valid Instagram export files.', 'error');
+                    return;
+                }
+                
+                // Analyze the data
+                const results = analyzeData(followingUsernames, followersUsernames);
+                showResults(results);
+                
+            } catch (error) {
+                console.error('Error processing files:', error);
+                showStatus(`Error processing files: ${error.message}`, 'error');
+            }
+        });
+
+        // Initialize
+        hideStatus();
+    </script>
+</body>
+</html>
