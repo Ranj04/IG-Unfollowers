@@ -1,4 +1,17 @@
 #!/usr/bin/env python3
+"""
+Instagram Following/Followers Analysis Tool
+
+Compares Instagram following vs followers from official data exports and reports:
+- Who doesn't follow back (unfollowers)
+- Who I don't follow back (fans) 
+- Mutual followers
+
+Supports both HTML and JSON export formats.
+
+Optional Dependencies:
+- beautifulsoup4: For enhanced HTML parsing (install with: pip install beautifulsoup4)
+"""
 import argparse
 import json
 import os
@@ -22,10 +35,12 @@ except ImportError:
     pass
 
 # Optional BeautifulSoup import for better HTML parsing
+# Install with: pip install beautifulsoup4
 try:
-    from bs4 import BeautifulSoup
+    from bs4 import BeautifulSoup  # type: ignore[import-untyped]
     HAS_BS4 = True
 except ImportError:
+    BeautifulSoup = None  # type: ignore[assignment]
     HAS_BS4 = False
 
 # Paths like these are NOT usernames

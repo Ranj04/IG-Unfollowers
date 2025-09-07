@@ -63,8 +63,8 @@ Tip: If you’re unsure which is which, open the file in a browser and skim the 
 ## **IF using website to upload files ignore terminal instructions, or else refer below
 
 ## Requirements
-- Python 3.9+
-- (Optional) `bs4` for stronger HTML parsing
+- Python 3.8+
+- (Optional) `bs4` (BeautifulSoup) for enhanced HTML parsing - install with `pip install beautifulsoup4`
 
 ## Usage
 ```bash

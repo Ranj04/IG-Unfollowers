@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ig-unfollowers"
+version = "1.0.0"
+description = "Instagram following/followers analysis tool"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.optional-dependencies]
+html-parsing = ["beautifulsoup4>=4.9.0"]
+
+[tool.pyright]
+reportMissingModuleSource = "warning"
+reportMissingImports = "warning"
