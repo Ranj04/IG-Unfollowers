@@ -1,6 +1,8 @@
 # IG-Unfollowers
 
-Short one-liner about the project.
+Python script to show you who unfollowed you because you aren't anyone's fan. Can be run via terminal or by clicking the link below: 
+https://ranj04.github.io/IG-Unfollowers/
+
 
 ## Table of Contents
 - [Overview](#overview)
