@@ -60,6 +60,8 @@ followers.html or followers.json (people who follow you)
 
 Tip: If you’re unsure which is which, open the file in a browser and skim the headings — Instagram labels them clearly.
 
+## **IF using website to upload files ignore terminal instructions, or else refer below
+
 ## Requirements
 - Python 3.9+
 - (Optional) `bs4` for stronger HTML parsing
